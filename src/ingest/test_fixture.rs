@@ -223,6 +223,17 @@ pub struct FtpServer {
 }
 impl FtpServer {
     pub fn new(data: Vec<u8>, fail_first_transfer: bool) -> Self {
+        Self::start(data, fail_first_transfer, None)
+    }
+
+    /// Send a prefix and keep the data socket open until ABOR. This makes abort
+    /// assertions wait for the command's reply rather than an earlier RETR reply.
+    pub fn with_paused_transfer(data: Vec<u8>, prefix_len: usize) -> Self {
+        assert!(prefix_len > 0 && prefix_len < data.len());
+        Self::start(data, false, Some(prefix_len))
+    }
+
+    fn start(data: Vec<u8>, fail_first_transfer: bool, pause_after: Option<usize>) -> Self {
         use std::{
             io::{BufRead, BufReader, Write},
             net::TcpListener,
@@ -262,6 +273,7 @@ impl FtpServer {
                         return;
                     }
                     let mut passive = None;
+                    let mut active_transfer = None;
                     let mut offset = 0;
                     loop {
                         let mut line = String::new();
@@ -307,18 +319,28 @@ impl FtpServer {
                                 }
                                 let (mut stream, _) = passive.take().unwrap().accept().unwrap();
                                 let attempt = transfers.fetch_add(1, Ordering::Relaxed);
-                                let end = if fail_first_transfer && attempt == 0 {
+                                let end = if let Some(prefix_len) = pause_after {
+                                    (offset + prefix_len).min(data.len())
+                                } else if fail_first_transfer && attempt == 0 {
                                     (offset + 100).min(data.len())
                                 } else {
                                     data.len()
                                 };
                                 let _ = stream.write_all(&data[offset..end]);
+                                if pause_after.is_some() {
+                                    active_transfer = Some(stream);
+                                    continue;
+                                }
                                 drop(stream);
                                 "226 Transfer complete\r\n".to_string()
                             }
                             "ABOR" => {
                                 aborts.fetch_add(1, Ordering::Relaxed);
-                                "226 Abort complete\r\n".to_string()
+                                if active_transfer.take().is_some() {
+                                    "426 Transfer aborted\r\n226 Abort complete\r\n".to_string()
+                                } else {
+                                    "226 Abort complete\r\n".to_string()
+                                }
                             }
                             "QUIT" => {
                                 let _ = control.write_all(b"221 Goodbye\r\n");

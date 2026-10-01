@@ -3,6 +3,7 @@
 #[path = "../src/ingest/ftp_range.rs"]
 mod ftp_range;
 #[cfg(test)]
+#[allow(dead_code)] // This example's tests use only the shared FTP/cache fixtures.
 #[path = "../src/ingest/test_fixture.rs"]
 mod test_fixture;
 

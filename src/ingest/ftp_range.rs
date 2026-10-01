@@ -980,7 +980,8 @@ mod tests {
     #[test]
     fn partial_ftp_transfers_are_aborted_on_seek_and_drop() {
         let dir = TempDir::new("ftp-abort");
-        let server = FtpServer::new(vec![7; BLOCK_SIZE as usize * 4], false);
+        let server =
+            FtpServer::with_paused_transfer(vec![7; BLOCK_SIZE as usize * 4], BLOCK_SIZE as usize);
         let cache = Arc::new(DiskRangeCache::open(&dir.0, 0).unwrap());
         let mut reader = FtpRangeReader::open(server.url.clone(), cache).unwrap();
         let mut byte = [0];
@@ -993,5 +994,22 @@ mod tests {
         assert_eq!(byte, [7]);
         drop(reader);
         assert_eq!(server.aborts.load(std::sync::atomic::Ordering::Relaxed), 2);
+    }
+
+    #[test]
+    fn completed_ftp_transfers_can_be_discarded_on_seek_and_drop() {
+        let dir = TempDir::new("ftp-completed-abort");
+        let server = FtpServer::new(vec![7; BLOCK_SIZE as usize * 4], false);
+        let cache = Arc::new(DiskRangeCache::open(&dir.0, 0).unwrap());
+        let mut reader = FtpRangeReader::open(server.url.clone(), cache).unwrap();
+        let mut byte = [0];
+        reader.read_exact(&mut byte).unwrap();
+        reader.seek(SeekFrom::Start(BLOCK_SIZE * 2)).unwrap();
+        assert!(reader.ftp.is_none());
+        reader.read_exact(&mut byte).unwrap();
+        assert_eq!(byte, [7]);
+        // RETR's queued 226 can satisfy abort() before the server processes ABOR.
+        // This is safe because the control connection is discarded, not reused.
+        drop(reader);
     }
 }
