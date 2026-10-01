@@ -1,4 +1,8 @@
-.PHONY: web openapi build image sample test
+.PHONY: web openapi build image sample test release
+BUMP ?= patch
+
+release:
+	node scripts/release.mjs $(BUMP)
 
 openapi:
 	cargo run --quiet -- openapi > openapi.json

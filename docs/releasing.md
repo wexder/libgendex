@@ -10,38 +10,43 @@ Repository: [wexder/libgendex](https://github.com/wexder/libgendex).
 The workflows derive the owner/repository from GitHub and lowercase registry names. The chart
 name is `libgendex`. Published chart defaults point at the container from the same release.
 
-## Prepare a version
+## Bump and publish
 
-1. Update the root package version in `Cargo.toml`.
-2. Run `cargo check` to update the root package version in `Cargo.lock`.
-3. Update `version` and `appVersion` in `charts/libgendex/Chart.yaml` to that same version.
-4. Update the example release versions in README, chart README, and Compose.
-5. Run `make openapi` after a package version bump, since the spec includes the application version.
-6. Run the checks, review, commit, and push the changes before tagging.
+Commit your changes, then run from a branch with push access to `origin`:
 
 ```sh
-node .github/scripts/prepare-release.mjs --check
-cargo fmt --all -- --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --all-targets --locked
-cargo test -p myisam-reader --doc --locked
-helm lint charts/libgendex --strict
-docker build -t bookjev:release-check .
+./scripts/release.mjs patch --dry-run
+./scripts/release.mjs patch
+# Or: make release BUMP=minor
+# Or: ./scripts/release.mjs 0.2.0-rc.1
 ```
+
+The script defaults to a patch bump, also accepts `minor`, `major`, or an explicit increasing
+SemVer, and supports `--remote NAME`. It requires Node.js and Git; no Cargo build is needed.
+For a prerelease, a patch bump promotes its existing core version to stable.
+
+It updates Cargo.toml, the root Cargo.lock entry, chart version/appVersion, OpenAPI's application
+version, Docker/Compose defaults, and README examples. Only the root Rust package is bumped;
+the MyISAM crate keeps its independent version. If API routes changed, regenerate the spec with
+`make openapi` and commit it before releasing. CI checks the entire generated spec.
+
+Before changing files it checks the clean checkout, version consistency, Git identity, remote
+access, unused tag, and whether the branch is behind its remote. It creates a `Release VERSION`
+commit and an annotated `vVERSION` tag, then pushes the current branch and tag in one atomic
+push. Any other unpushed commits on the branch are included. `--dry-run` only prints the plan;
+it does not require a clean checkout or contact the remote. The script does not run tests.
+
+If the push fails, the local commit and tag remain. Resolve the failure and rerun the printed
+`git push --atomic` command. Do not rerun a version bump to retry that same release. Branch
+protection can prevent a direct release commit push; use your repository's merge process in
+that case, then tag the merged release commit.
 
 Container and CI builds use stable Rust 1.99.0. The current lockfile requires Rust 1.97.1 or later.
 The CI workflow overrides developer-only nightly flags and linker/wrapper settings. Docker builds
 ignore `.cargo/config.toml`. Default release images use portable x86-64 code on amd64 and native
 arm64 code on arm64. The runtime contains the Rust binary and UI with no MariaDB or unrar.
 
-## Publish
-
-After merging the prepared version, push its tag:
-
-```sh
-git tag -a v0.1.0 -m "Release 0.1.0"
-git push origin v0.1.0
-```
+## Release workflow
 
 The `Release` workflow validates the tag before running the complete CI workflow, then:
 

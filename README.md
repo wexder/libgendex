@@ -186,6 +186,13 @@ verification command and storage details are in
 
 ## Releases
 
+After committing your changes, bump the version and push its release commit and tag:
+
+```sh
+./scripts/release.mjs patch --dry-run
+./scripts/release.mjs patch   # Also accepts minor, major, or an explicit version
+```
+
 GitHub Actions validates pull requests and publishes the container and OCI chart on version tags.
 Container tags are `0.1.0`, `v0.1.0`, and `latest` for stable releases; chart versions omit `v`.
 See [release preparation and publishing](docs/releasing.md) for versioning, package visibility,
