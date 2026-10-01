@@ -95,7 +95,7 @@ push @etf, { etf_id => $l++, f_id => 9998, e_id => 1001 }, { etf_id => $l++, f_i
 
 my @keys = ({ key => 101, name_en => 'Language' }, { key => 505, name_en => 'ISBN' }, { key => 305, name_en => 'Annotation' });
 
-print "-- MySQL dump 10.13 (bookjev sample)\n/*!40101 SET NAMES utf8 */;\nUSE `libgen_new`;\n\n";
+print "-- MySQL dump 10.13 (libgendex sample)\n/*!40101 SET NAMES utf8 */;\nUSE `libgen_new`;\n\n";
 my %rows = (editions => \@ed, editions_add_descr => \@descr, editions_to_files => \@etf, elem_descr => \@keys, files => \@files);
 for my $t (@order) {
     print "DROP TABLE IF EXISTS `$t`;\n", $create{$t}, "\nLOCK TABLES `$t` WRITE;\n";

@@ -33,8 +33,8 @@ Restarting during bootstrap starts that import again; retained source ranges rem
 | `persistence.*.existingClaim` | empty | Use an existing PVC instead of creating one |
 | `persistence.*.retain` | `true` | Preserve chart-created PVCs on uninstall |
 | `persistence.*.enabled` | `true` | If false and no existingClaim or library NFS, use ephemeral emptyDir |
-| `config.toml` | empty | Non-secret TOML settings mounted at `/app/bookjev.toml` |
-| `config.existingSecret` | empty | Existing Secret containing the `bookjev.toml` key |
+| `config.toml` | empty | Non-secret TOML settings mounted at `/app/libgendex.toml` |
+| `config.existingSecret` | empty | Existing Secret containing the `libgendex.toml` key |
 | `extraEnv` / `extraEnvFrom` | `[]` | Additional variables and references to ConfigMaps/Secrets |
 | `ingress.enabled` | `false` | Create an Ingress |
 | `resources.requests` | 1 CPU, 1 GiB | Reserved compute resources |
@@ -98,11 +98,11 @@ config:
     refresh_interval = "24h"
 
 extraEnv:
-  - name: BOOKJEV_RANKING__PROVIDER
+  - name: LIBGENDEX_RANKING__PROVIDER
     value: api
-  - name: BOOKJEV_RANKING__API__URL
+  - name: LIBGENDEX_RANKING__API__URL
     value: https://scorer.example.com
-  - name: BOOKJEV_RANKING__API__API_KEY
+  - name: LIBGENDEX_RANKING__API__API_KEY
     valueFrom:
       secretKeyRef:
         name: scorer-credentials

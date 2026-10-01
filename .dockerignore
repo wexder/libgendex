@@ -13,6 +13,6 @@ charts
 docs
 scripts
 examples
-bookjev.toml
+libgendex.toml
 .env
 *.tgz

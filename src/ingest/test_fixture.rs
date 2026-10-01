@@ -10,7 +10,7 @@ impl TempDir {
     pub fn new(label: &str) -> Self {
         static NEXT: AtomicU64 = AtomicU64::new(0);
         let dir = std::env::temp_dir().join(format!(
-            "bookjev-test-{label}-{}-{}",
+            "libgendex-test-{label}-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
         ));

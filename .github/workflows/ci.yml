@@ -84,7 +84,7 @@ jobs:
         with:
           context: .
           load: true
-          tags: bookjev:ci
+          tags: libgendex:ci
           platforms: linux/${{ matrix.arch }}
-          cache-from: type=gha,scope=bookjev-${{ matrix.arch }}
-          cache-to: type=gha,mode=max,scope=bookjev-${{ matrix.arch }}
+          cache-from: type=gha,scope=libgendex-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=libgendex-${{ matrix.arch }}

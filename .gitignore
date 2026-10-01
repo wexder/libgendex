@@ -5,6 +5,6 @@ web/dist/
 web/src/api/
 data/
 library/
-bookjev.toml
+libgendex.toml
 dist/
 *.tgz

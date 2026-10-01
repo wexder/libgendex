@@ -3,7 +3,7 @@ import { health, search, type SearchResponse } from "./api";
 import { FORMATS, LANGUAGES } from "./format";
 import ResultCard from "./ResultCard";
 import StatusBar from "./StatusBar";
-import Downloads, { useDownloads } from "./Downloads";
+import { useDownloads } from "./useDownloads";
 
 type Query = { q: string; ext: string; lang: string };
 
@@ -89,9 +89,8 @@ export default function App() {
           }}
         >
           <span class="logo" aria-hidden="true">b</span>
-          bookjev
+          libgendex
         </a>
-        <Downloads jobs={downloads.jobs()} />
       </header>
 
       <main>

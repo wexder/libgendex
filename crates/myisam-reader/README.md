@@ -1,6 +1,6 @@
 # myisam-reader
 
-A separate Rust crate for legacy MySQL 5.x FRM schemas and fixed/dynamic MyISAM records. Bookjev
+A separate Rust crate for legacy MySQL 5.x FRM schemas and fixed/dynamic MyISAM records. Libgendex
 uses it through a path dependency. FTP, RAR, collection filtering and search indexing stay in the
 application; this crate accepts any `std::io::Read` source and starts no external programs.
 
@@ -47,7 +47,7 @@ assert_eq!(stats.records, info.record_count);
 Support is scoped to the tested MySQL 5.x layouts. `myisampack` compressed tables are rejected.
 This is a physical row reader, not a complete SQL type/charset conversion engine: FLOAT, DECIMAL,
 date/time formatting and non-UTF-8 text conversion are not provided by the scalar helpers.
-Row checksum bytes are consumed; the caller should verify source integrity (Bookjev checks RAR
+Row checksum bytes are consumed; the caller should verify source integrity (Libgendex checks RAR
 member CRCs). Fragment assembly uses RAM budgets of 128 MiB for pending rows and 32 MiB for earlier
 continuations, with a 128 MiB single-row safety limit. Temporary assembly allocations and returned
 rows use additional memory. Distant or excessive unresolved fragments use embedded SQLite scratch
@@ -104,7 +104,7 @@ root when changing fixture data:
 ```sh
 cargo run --release --example capture-myisam-fixtures -- \
   ftp://ftp.libgen.bz/upload/dbbackup/libgen_new-2026-09-06.part001.rar \
-  62 /tmp/bookjev-fixture-cache crates/myisam-reader/tests/fixtures/libgen-2026-09-06 1000
+  62 /tmp/libgendex-fixture-cache crates/myisam-reader/tests/fixtures/libgen-2026-09-06 1000
 
 nix shell nixpkgs#mariadb --command bash crates/myisam-reader/tools/generate-reference.sh
 ```

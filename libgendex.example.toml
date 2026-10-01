@@ -1,5 +1,5 @@
-# Copy to bookjev.toml (or point BOOKJEV_CONFIG at it). Every key can also be set via env vars:
-# BOOKJEV_<SECTION>__<KEY>, e.g. BOOKJEV_RANKING__PROVIDER=openjev. Values shown are the defaults.
+# Copy to libgendex.toml (or point LIBGENDEX_CONFIG at it). Every key can also be set via env vars:
+# LIBGENDEX_<SECTION>__<KEY>, e.g. LIBGENDEX_RANKING__PROVIDER=api. Values shown are the defaults.
 
 [server]
 bind = "0.0.0.0:8080"

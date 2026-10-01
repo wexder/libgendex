@@ -53,15 +53,15 @@ spec:
               containerPort: 8080
               protocol: TCP
           env:
-            - name: BOOKJEV_SERVER__BIND
+            - name: LIBGENDEX_SERVER__BIND
               value: "0.0.0.0:8080"
-            - name: BOOKJEV_SERVER__STATIC_DIR
+            - name: LIBGENDEX_SERVER__STATIC_DIR
               value: /app/web
-            - name: BOOKJEV_PATHS__DATA_DIR
+            - name: LIBGENDEX_PATHS__DATA_DIR
               value: /data
-            - name: BOOKJEV_PATHS__LIBRARY_DIR
+            - name: LIBGENDEX_PATHS__LIBRARY_DIR
               value: /library
-            - name: BOOKJEV_LOG__JSON
+            - name: LIBGENDEX_LOG__JSON
               value: "true"
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
@@ -96,8 +96,8 @@ spec:
               mountPath: /tmp
             {{- if or .Values.config.toml .Values.config.existingSecret }}
             - name: config
-              mountPath: /app/bookjev.toml
-              subPath: bookjev.toml
+              mountPath: /app/libgendex.toml
+              subPath: libgendex.toml
               readOnly: true
             {{- end }}
       volumes:

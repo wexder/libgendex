@@ -49,8 +49,8 @@ persistence:
       readOnly: false
 
 config:
-  toml: "" # Non-secret application settings, mounted as /app/bookjev.toml.
-  existingSecret: "" # Alternative: a Secret with a bookjev.toml key.
+  toml: "" # Non-secret application settings, mounted as /app/libgendex.toml.
+  existingSecret: "" # Alternative: a Secret with a libgendex.toml key.
 extraEnv: []
 extraEnvFrom: []
 

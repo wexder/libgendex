@@ -17,7 +17,7 @@ test:
 	cargo test --workspace --all-targets
 
 image:
-	docker build -t bookjev:latest .
+	docker build -t libgendex:latest .
 
 # Writes data/sample.sql, a small dump in the libgen.li format, for trying the app without the real dumps.
 sample:

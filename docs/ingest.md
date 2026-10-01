@@ -6,6 +6,32 @@ The runtime does not invoke curl, unrar, MySQL or MariaDB.
 Remote bootstrap accepts FTP RAR snapshots. Directory discovery validates the volume order
 before opening the archive. HTTP endpoints are used for daily API refreshes and book downloads.
 
+## Bootstrap and daily refreshes
+
+The index is bootstrapped from the LibGen FTP snapshot, then kept current through the LibGen API.
+
+1. **Bootstrap (once).** libgendex finds the newest complete snapshot on the FTP mirror
+   (`ftp://ftp.libgen.bz/upload/dbbackup/`, `libgen_new-<date>.partNNN.rar`). Rust reads RAR
+   ranges on demand into a persistent, size capped disk cache (512 MiB by default), streams the
+   MyISAM tables through the native decoder, and keeps only the configured collections. It does
+   not save the complete archive or extracted table files. Allow additional disk space for the
+   Tantivy index and temporary SQLite staging database. Distant unresolved MyISAM fragments can
+   use temporary scratch files, which are removed after the table finishes.
+2. **New files by id.** libgen.li's per-collection file ids (`fiction_id`, `libgen_id`) are the
+   same ids the dumps contain, so after import libgendex walks
+   `json.php?object=f&topic=f|l&id_start=…&id_end=…` upward from the highest id in the dump –
+   like update_libgen's `idnewer` – and indexes every new file. Progress is saved per window.
+3. **Changes by day.** File changes (removals, edits) of the last `modified_catchup_days` (7) are
+   replayed day by day via `mode=modified`, then one day per refresh (`refresh_interval`, 24 h).
+
+Progress shows in the UI footer, `GET /api/index/status` and the logs.
+FTP bootstrap logs a heartbeat every 10 seconds, including the current member/table, rows,
+uncompressed bytes read, elapsed time, processing rate, and FTP cache activity. Archive header
+discovery also reports completed volumes. The status API's `bootstrap` object exposes the same
+step counters; the footer shows table rows, byte progress, processing speed, and elapsed time.
+Byte and row totals describe the current table, not overall import completion. During metadata
+discovery, joins, and commit, totals can be unknown; the phase and elapsed time still update.
+
 ## Verify the production ingest path
 
 Run from the repository root, with a separate work directory and cache directory:
@@ -13,7 +39,7 @@ Run from the repository root, with a separate work directory and cache directory
 ```sh
 cargo run --release -- verify-ingest \
   ftp://ftp.libgen.bz/upload/dbbackup/libgen_new-2026-09-06.part001.rar \
-  62 /tmp/bookjev-verification /tmp/bookjev-verification-cache 0
+  62 /tmp/libgendex-verification /tmp/libgendex-verification-cache 0
 ```
 
 The final argument is the maximum number of active rows to read from each table. Zero reads the

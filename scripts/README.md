@@ -30,7 +30,7 @@ make sample
 ```
 
 It requires Perl and writes `data/sample.sql`. Configuration instructions are in the
-[root README](../README.md#try-it-without-the-real-dumps).
+[development guide](../docs/development.md#sample-metadata).
 
 The parser's optional SQL reference generator lives in
 [`crates/myisam-reader/tools`](../crates/myisam-reader/README.md#optional-fixture-capture-and-independent-reference-generation).

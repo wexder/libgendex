@@ -28,7 +28,7 @@ pub struct AppState {
 }
 
 #[derive(OpenApi)]
-#[openapi(info(title = "bookjev", description = "Library Genesis index search API"))]
+#[openapi(info(title = "libgendex", description = "Library Genesis index search API"))]
 pub struct ApiDoc;
 
 fn api_router() -> OpenApiRouter<AppState> {

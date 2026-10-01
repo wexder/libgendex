@@ -6,6 +6,6 @@ metadata:
   labels:
     {{- include "libgendex.labels" . | nindent 4 }}
 data:
-  bookjev.toml: |
+  libgendex.toml: |
     {{- .Values.config.toml | nindent 4 }}
 {{- end }}

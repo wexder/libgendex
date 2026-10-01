@@ -231,12 +231,12 @@ impl Default for Config {
 }
 
 impl Config {
-    /// Defaults < `bookjev.toml` (or `$BOOKJEV_CONFIG`) < `BOOKJEV_*` env vars (`__` separates nested keys).
+    /// Defaults < `libgendex.toml` (or `$LIBGENDEX_CONFIG`) < `LIBGENDEX_*` env vars (`__` separates nested keys).
     pub fn load() -> anyhow::Result<Self> {
-        let path = std::env::var("BOOKJEV_CONFIG").unwrap_or_else(|_| "bookjev.toml".into());
+        let path = std::env::var("LIBGENDEX_CONFIG").unwrap_or_else(|_| "libgendex.toml".into());
         let cfg = Figment::from(Serialized::defaults(Config::default()))
             .merge(Toml::file(path))
-            .merge(Env::prefixed("BOOKJEV_").split("__").ignore(&["config"]))
+            .merge(Env::prefixed("LIBGENDEX_").split("__").ignore(&["config"]))
             .extract()?;
         Ok(cfg)
     }

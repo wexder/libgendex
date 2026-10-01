@@ -36,7 +36,7 @@ async fn main() -> Result<()> {
         let args = std::env::args().skip(2).collect::<Vec<_>>();
         if args.len() != 5 {
             anyhow::bail!(
-                "usage: bookjev verify-ingest FIRST_FTP_URL VOLUMES WORK_DIR CACHE_DIR ROWS_PER_TABLE (0 = full snapshot)"
+                "usage: libgendex verify-ingest FIRST_FTP_URL VOLUMES WORK_DIR CACHE_DIR ROWS_PER_TABLE (0 = full snapshot)"
             );
         }
         let cfg = (*cfg).clone();

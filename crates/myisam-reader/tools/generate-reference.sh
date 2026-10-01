@@ -7,7 +7,7 @@ fixture_dir="${1:-$reference_script_dir/../tests/fixtures/libgen-2026-09-06}"
 for reference_tool in mariadb mariadbd mariadb-install-db myisamchk node; do
   command -v "$reference_tool" >/dev/null || { echo "Missing reference tool: $reference_tool" >&2; exit 1; }
 done
-reference_dir="$(mktemp -d "${TMPDIR:-/tmp}/bookjev-myisam-reference.XXXXXX")"
+reference_dir="$(mktemp -d "${TMPDIR:-/tmp}/libgendex-myisam-reference.XXXXXX")"
 reference_pid=""
 cleanup_reference() {
   if [ -n "$reference_pid" ]; then kill "$reference_pid" 2>/dev/null || true; wait "$reference_pid" 2>/dev/null || true; fi
