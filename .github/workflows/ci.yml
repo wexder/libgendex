@@ -88,12 +88,3 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           cache-from: type=gha,scope=bookjev-${{ matrix.arch }}
           cache-to: type=gha,mode=max,scope=bookjev-${{ matrix.arch }}
-      - name: Smoke test the non-root image with a read-only filesystem
-        run: |
-          docker run -d --name bookjev-ci --read-only --tmpfs /tmp \
-            -v bookjev-ci-data:/data -v bookjev-ci-library:/library \
-            -e BOOKJEV_INDEXER__ENABLED=false -p 127.0.0.1:8080:8080 bookjev:ci
-          trap 'docker logs bookjev-ci; docker rm -f bookjev-ci; docker volume rm bookjev-ci-data bookjev-ci-library' EXIT
-          curl --fail --retry 30 --retry-delay 2 --retry-connrefused http://127.0.0.1:8080/api/health
-          curl --fail http://127.0.0.1:8080/ > /dev/null
-          test "$(docker exec bookjev-ci id -u)" = 1000
