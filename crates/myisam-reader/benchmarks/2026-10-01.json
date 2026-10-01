@@ -1,0 +1,48 @@
+{
+  "command": "cargo bench -p myisam-reader --bench real_data -- --iterations 5000",
+  "cpu": "Intel Core i5-10400F @ 2.90GHz",
+  "rust": "1.100.0-nightly (0dfb098f3 2026-08-31)",
+  "scope": "Warm in-memory real fixture rows, full field decoding; excludes FTP/RAR/staging/index. Live FTP import was running concurrently.",
+  "results": [
+    {
+      "decoded_mib_per_second": 142.45586985736438,
+      "iterations": 5000,
+      "rows": 5000000,
+      "rows_per_second": 1498794.0097884464,
+      "seconds": 3.336015468,
+      "table": "editions"
+    },
+    {
+      "decoded_mib_per_second": 160.61330609007862,
+      "iterations": 5000,
+      "rows": 5000000,
+      "rows_per_second": 3116031.2693663095,
+      "seconds": 1.604605207,
+      "table": "editions_add_descr"
+    },
+    {
+      "decoded_mib_per_second": 237.5024591067725,
+      "iterations": 5000,
+      "rows": 5000000,
+      "rows_per_second": 9223680.687420113,
+      "seconds": 0.542082946,
+      "table": "editions_to_files"
+    },
+    {
+      "decoded_mib_per_second": 170.39088792759577,
+      "iterations": 5000,
+      "rows": 5000000,
+      "rows_per_second": 723187.4380689668,
+      "seconds": 6.913836907,
+      "table": "files"
+    },
+    {
+      "decoded_mib_per_second": 128.45500527301084,
+      "iterations": 5000,
+      "rows": 1085000,
+      "rows_per_second": 1055953.010375221,
+      "seconds": 1.027507843,
+      "table": "elem_descr"
+    }
+  ]
+}

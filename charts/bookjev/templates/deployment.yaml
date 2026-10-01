@@ -1,0 +1,129 @@
+{{- if ne (int .Values.replicaCount) 1 }}
+{{- fail "bookjev requires exactly one replica: the index and FTP cache have a single writer" }}
+{{- end }}
+{{- if and .Values.config.toml .Values.config.existingSecret }}
+{{- fail "choose config.toml or config.existingSecret, not both" }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "bookjev.fullname" . }}
+  labels:
+    {{- include "bookjev.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "bookjev.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "bookjev.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: bookjev
+          image: {{ include "bookjev.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: BOOKJEV_SERVER__BIND
+              value: "0.0.0.0:8080"
+            - name: BOOKJEV_SERVER__STATIC_DIR
+              value: /app/web
+            - name: BOOKJEV_PATHS__DATA_DIR
+              value: /data
+            - name: BOOKJEV_PATHS__LIBRARY_DIR
+              value: /library
+            - name: BOOKJEV_LOG__JSON
+              value: "true"
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: library
+              mountPath: /library
+            - name: tmp
+              mountPath: /tmp
+            {{- if or .Values.config.toml .Values.config.existingSecret }}
+            - name: config
+              mountPath: /app/bookjev.toml
+              subPath: bookjev.toml
+              readOnly: true
+            {{- end }}
+      volumes:
+        {{- range $name := list "data" "library" }}
+        {{- $storage := index $.Values.persistence $name }}
+        - name: {{ $name }}
+          {{- if $storage.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ $storage.existingClaim | quote }}
+          {{- else if $storage.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "bookjev.fullname" $ }}-{{ $name }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- end }}
+        - name: tmp
+          emptyDir: {}
+        {{- if .Values.config.existingSecret }}
+        - name: config
+          secret:
+            secretName: {{ .Values.config.existingSecret | quote }}
+        {{- else if .Values.config.toml }}
+        - name: config
+          configMap:
+            name: {{ include "bookjev.fullname" . }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

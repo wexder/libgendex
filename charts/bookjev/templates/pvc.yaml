@@ -1,0 +1,25 @@
+{{- range $name := list "data" "library" }}
+{{- $storage := index $.Values.persistence $name }}
+{{- if and $storage.enabled (not $storage.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "bookjev.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "bookjev.labels" $ | nindent 4 }}
+  {{- if $storage.retain }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml $storage.accessModes | nindent 4 }}
+  {{- if $storage.storageClass }}
+  storageClassName: {{ $storage.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $storage.size }}
+{{- end }}
+{{- end }}

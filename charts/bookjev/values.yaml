@@ -1,0 +1,98 @@
+# One writer owns the local search index and FTP cache.
+replicaCount: 1
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  # The release workflow also derives this from the GitHub repository.
+  repository: ghcr.io/wexder/libgendex
+  tag: "" # Defaults to Chart.appVersion.
+  digest: "" # When set, takes precedence over tag.
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: bookjev.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+persistence:
+  data:
+    enabled: true
+    existingClaim: ""
+    storageClass: "" # Empty uses the cluster default.
+    accessModes: [ReadWriteOnce]
+    size: 50Gi
+    retain: true # Keep chart-created claims after helm uninstall.
+  library:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes: [ReadWriteOnce]
+    size: 100Gi
+    retain: true
+
+config:
+  toml: "" # Non-secret application settings, mounted as /app/bookjev.toml.
+  existingSecret: "" # Alternative: a Secret with a bookjev.toml key.
+extraEnv: []
+extraEnvFrom: []
+
+resources:
+  requests:
+    cpu: "1"
+    memory: 1Gi
+  limits:
+    cpu: "4"
+    memory: 4Gi
+
+podAnnotations: {}
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: [ALL]
+
+startupProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  periodSeconds: 5
+  failureThreshold: 60
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  periodSeconds: 10
+  timeoutSeconds: 5
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 5
+
+terminationGracePeriodSeconds: 60
+nodeSelector: {}
+tolerations: []
+affinity: {}

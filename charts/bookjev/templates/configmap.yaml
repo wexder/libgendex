@@ -1,0 +1,11 @@
+{{- if .Values.config.toml }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bookjev.fullname" . }}
+  labels:
+    {{- include "bookjev.labels" . | nindent 4 }}
+data:
+  bookjev.toml: |
+    {{- .Values.config.toml | nindent 4 }}
+{{- end }}

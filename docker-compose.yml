@@ -1,0 +1,32 @@
+services:
+  bookjev:
+    build:
+      context: .
+      # args:
+      #   FEATURES: local                       # include the in-process AI ranking model
+    image: ghcr.io/wexder/libgendex:${BOOKJEV_VERSION:-0.1.0}
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      BOOKJEV_LOG__JSON: "true"
+      # Optional AI re-ranking (default: none):
+      # BOOKJEV_RANKING__PROVIDER: api          # remote OpenJev server (service below)
+      # BOOKJEV_RANKING__API__URL: http://openjev:8080
+      # BOOKJEV_RANKING__PROVIDER: local        # in-process model, needs FEATURES=local above;
+      #                                         # downloads ~1.1 GB into ./data/models on first start
+    volumes:
+      - ./data:/data
+      - ./library:/library
+      # - ./bookjev.toml:/app/bookjev.toml:ro
+
+  # Optional remote scorer for provider "api" (needs an NVIDIA GPU with 24GB+ VRAM), see https://github.com/razorback16/openjev
+  # openjev:
+  #   image: razorback16/openjev:0.5.0
+  #   ipc: host
+  #   volumes:
+  #     - ~/.cache/huggingface:/root/.cache/huggingface
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]

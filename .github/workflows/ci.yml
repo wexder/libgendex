@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  # Override developer-only nightly flags, sccache, and mold from .cargo/config.toml.
+  RUSTFLAGS: ""
+  RUSTC_WRAPPER: ""
+  CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER: cc
+
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de
+        with:
+          toolchain: 1.99.0
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - run: cargo test --workspace --all-targets --locked
+      - run: cargo test -p myisam-reader --doc --locked
+      - name: Check generated OpenAPI
+        run: |
+          cargo run --locked --quiet -- openapi > "$RUNNER_TEMP/openapi.json"
+          diff -u openapi.json "$RUNNER_TEMP/openapi.json"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: node .github/scripts/prepare-release.mjs --check
+      - run: npm ci --no-audit --no-fund && npm run build
+        working-directory: web
+
+  helm:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: v4.3.0
+      - run: helm lint charts/bookjev --strict
+      - name: Render persistence, ingress, and config variants
+        run: |
+          helm template bookjev charts/bookjev > "$RUNNER_TEMP/chart-default.yaml"
+          helm template bookjev charts/bookjev --set ingress.enabled=true --set config.toml='[log]' > "$RUNNER_TEMP/chart-ingress.yaml"
+          helm template bookjev charts/bookjev --set persistence.data.existingClaim=data --set persistence.library.existingClaim=library --set config.existingSecret=bookjev > "$RUNNER_TEMP/chart-existing.yaml"
+          helm template bookjev charts/bookjev --set persistence.data.enabled=false --set persistence.library.enabled=false > "$RUNNER_TEMP/chart-ephemeral.yaml"
+          if helm template bookjev charts/bookjev --set replicaCount=2; then
+            echo 'Chart must reject multiple writers' >&2
+            exit 1
+          fi
+
+  container:
+    needs: [rust, helm]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          load: true
+          tags: bookjev:ci
+          platforms: linux/${{ matrix.arch }}
+          cache-from: type=gha,scope=bookjev-${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=bookjev-${{ matrix.arch }}
+      - name: Smoke test the non-root image with a read-only filesystem
+        run: |
+          docker run -d --name bookjev-ci --read-only --tmpfs /tmp \
+            -v bookjev-ci-data:/data -v bookjev-ci-library:/library \
+            -e BOOKJEV_INDEXER__ENABLED=false -p 127.0.0.1:8080:8080 bookjev:ci
+          trap 'docker logs bookjev-ci; docker rm -f bookjev-ci; docker volume rm bookjev-ci-data bookjev-ci-library' EXIT
+          curl --fail --retry 30 --retry-delay 2 --retry-connrefused http://127.0.0.1:8080/api/health
+          curl --fail http://127.0.0.1:8080/ > /dev/null
+          test "$(docker exec bookjev-ci id -u)" = 1000

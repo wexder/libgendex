@@ -1,0 +1,1770 @@
+{
+  "captured_at": "2026-10-01",
+  "oracle": "Decoded byte hashes are native regression baselines; scalar expectations are independently checked against every selected SQL field in mysql-reference.json.",
+  "row_limit": 1000,
+  "source_url": "ftp://ftp.libgen.bz/upload/dbbackup/libgen_new-2026-09-06.part001.rar",
+  "tables": [
+    {
+      "bytes": 99664,
+      "columns": [
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "e_id",
+          "offset": 0,
+          "type_code": 3
+        },
+        {
+          "enum_values": [
+            "a",
+            "s",
+            "l",
+            "f",
+            "r",
+            "m",
+            "c"
+          ],
+          "flags": 16648,
+          "length": 4,
+          "name": "libgen_topic",
+          "offset": 4,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 200,
+          "name": "type",
+          "offset": 5,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 2000,
+          "name": "series_name",
+          "offset": 206,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 8000,
+          "name": "title",
+          "offset": 2208,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 800,
+          "name": "title_add",
+          "offset": 10210,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 8000,
+          "name": "author",
+          "offset": 11012,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 4000,
+          "name": "publisher",
+          "offset": 19014,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 800,
+          "name": "city",
+          "offset": 23016,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 1000,
+          "name": "edition",
+          "offset": 23818,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "year",
+          "offset": 24820,
+          "type_code": 15
+        },
+        {
+          "enum_values": [
+            "",
+            "1q",
+            "1s",
+            "1t",
+            "2q",
+            "2s",
+            "2t",
+            "3q",
+            "3t",
+            "4q",
+            "4t",
+            "apr",
+            "aug",
+            "chr",
+            "dec",
+            "fal",
+            "feb",
+            "hol",
+            "jan",
+            "jul",
+            "jun",
+            "mar",
+            "may",
+            "mon",
+            "nov",
+            "oct",
+            "sep",
+            "spr",
+            "sum",
+            "win",
+            "aut"
+          ],
+          "flags": 264,
+          "length": 12,
+          "name": "month",
+          "offset": 25001,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 8,
+          "name": "day",
+          "offset": 25002,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "pages",
+          "offset": 25011,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 2000,
+          "name": "editions_add_info",
+          "offset": 25413,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 1800,
+          "name": "cover_url",
+          "offset": 27415,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "cover_exists",
+          "offset": 29217,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 27,
+          "length": 11,
+          "name": "issue_s_id",
+          "offset": 29218,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "issue_number_in_year",
+          "offset": 29222,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_year_number",
+          "offset": 29226,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 380,
+          "name": "issue_number",
+          "offset": 29407,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_volume",
+          "offset": 29789,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "issue_split",
+          "offset": 29970,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_total_number",
+          "offset": 29974,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_first_page",
+          "offset": 30155,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_last_page",
+          "offset": 30336,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 16,
+          "name": "issue_year_end",
+          "offset": 30517,
+          "type_code": 15
+        },
+        {
+          "enum_values": [
+            "",
+            "1q",
+            "1s",
+            "1t",
+            "2q",
+            "2s",
+            "2t",
+            "3q",
+            "3t",
+            "4q",
+            "4t",
+            "apr",
+            "aug",
+            "chr",
+            "dec",
+            "fal",
+            "feb",
+            "hol",
+            "jan",
+            "jul",
+            "jun",
+            "mar",
+            "may",
+            "mon",
+            "nov",
+            "oct",
+            "sep",
+            "spr",
+            "sum",
+            "win",
+            "aut"
+          ],
+          "flags": 264,
+          "length": 12,
+          "name": "issue_month_end",
+          "offset": 30534,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 8,
+          "name": "issue_day_end",
+          "offset": 30535,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 1,
+          "name": "issue_closed",
+          "offset": 30544,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 800,
+          "name": "doi",
+          "offset": 30548,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 139,
+          "length": 19,
+          "name": "time_added",
+          "offset": 31350,
+          "type_code": 17
+        },
+        {
+          "enum_values": [],
+          "flags": 139,
+          "length": 19,
+          "name": "time_last_modified",
+          "offset": 31354,
+          "type_code": 17
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "visible",
+          "offset": 31358,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "editable",
+          "offset": 31371,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "uid",
+          "offset": 31372,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 800,
+          "name": "commentary",
+          "offset": 31376,
+          "type_code": 15
+        }
+      ],
+      "complete_data": false,
+      "continuation_blocks": 0,
+      "deleted_blocks": 0,
+      "fragmented_records": 0,
+      "null_fields": 0,
+      "options": 3,
+      "pack_bits": 2,
+      "record_len": 32178,
+      "rows": 1000,
+      "samples": [
+        {
+          "author": "",
+          "e_id": "1",
+          "libgen_topic": "c",
+          "title": "",
+          "visible": "",
+          "year": "2005"
+        },
+        {
+          "author": "",
+          "e_id": "2",
+          "libgen_topic": "c",
+          "title": "extras",
+          "visible": "",
+          "year": "2005"
+        },
+        {
+          "author": "",
+          "e_id": "3",
+          "libgen_topic": "c",
+          "title": "",
+          "visible": "",
+          "year": "2009"
+        },
+        {
+          "author": "",
+          "e_id": "4",
+          "libgen_topic": "c",
+          "title": "Armitage interview Dave Gibbons on Watchmen ",
+          "visible": "",
+          "year": ""
+        },
+        {
+          "author": "",
+          "e_id": "142761309",
+          "libgen_topic": "m",
+          "title": "Ezermester_1957",
+          "visible": "",
+          "year": "1957"
+        },
+        {
+          "author": "",
+          "e_id": "6",
+          "libgen_topic": "c",
+          "title": "",
+          "visible": "",
+          "year": "2013"
+        },
+        {
+          "author": "",
+          "e_id": "7",
+          "libgen_topic": "c",
+          "title": "",
+          "visible": "",
+          "year": "2013"
+        },
+        {
+          "author": "Alex Sinclair (cover), Andy Kubert (cover, penciler), Brad Anderson (colorist, cover), Camilla Zhang (editor), J. Michael Straczynski (writer), Jim Lee (cover), Joe Kubert (cover, inker), John Higgins (artist), Kevin Nowlan (editor), Len Wein (writer), Mark Doyle (editor), Nick J. Napolitano (letterer), Sal Cipriano , Scott Williams (cover), Will Dennis (editor)",
+          "e_id": "8",
+          "libgen_topic": "c",
+          "title": "",
+          "visible": "",
+          "year": "2013"
+        }
+      ],
+      "sha256": {
+        "decoded_rows": "ab42746a8fe3a58746f1cf18e8e57b6ec640ffc8d338bc7650698d13a3f43e52",
+        "frm": "2f87149c77b869e1a2994d6409588b9d831b9049808f78cfe2d9873fc3767317",
+        "myd": "9339698c957aa26c033e74f819ab847ba7af5ad695d422fe68e8cb9fc60c2834",
+        "myi": "144791d933ccca6c61db662053206aaa00ac6b04e415f77a3aac13a6bb4c3644"
+      },
+      "source_data_bytes": 48279368620,
+      "source_rows": 206357282,
+      "table": "editions"
+    },
+    {
+      "bytes": 54048,
+      "columns": [
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "e_add_id",
+          "offset": 1,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "e_id",
+          "offset": 5,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "key",
+          "offset": 9,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 33864,
+          "length": 8,
+          "name": "value",
+          "offset": 13,
+          "type_code": 250
+        },
+        {
+          "enum_values": [],
+          "flags": 33864,
+          "length": 8,
+          "name": "value_add1",
+          "offset": 24,
+          "type_code": 250
+        },
+        {
+          "enum_values": [],
+          "flags": 33864,
+          "length": 8,
+          "name": "value_add2",
+          "offset": 35,
+          "type_code": 250
+        },
+        {
+          "enum_values": [],
+          "flags": 33864,
+          "length": 8,
+          "name": "value_add3",
+          "offset": 46,
+          "type_code": 250
+        },
+        {
+          "enum_values": [],
+          "flags": 16450,
+          "length": 20,
+          "name": "value_hash",
+          "offset": 57,
+          "type_code": 8
+        },
+        {
+          "enum_values": [],
+          "flags": 32880,
+          "length": 10,
+          "name": "date_start",
+          "offset": 65,
+          "type_code": 14
+        },
+        {
+          "enum_values": [],
+          "flags": 32880,
+          "length": 10,
+          "name": "date_end",
+          "offset": 68,
+          "type_code": 14
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_start",
+          "offset": 71,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "issue_end",
+          "offset": 252,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 139,
+          "length": 19,
+          "name": "time_added",
+          "offset": 433,
+          "type_code": 17
+        },
+        {
+          "enum_values": [],
+          "flags": 139,
+          "length": 19,
+          "name": "time_last_modified",
+          "offset": 437,
+          "type_code": 17
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 4000,
+          "name": "commentary",
+          "offset": 441,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 32795,
+          "length": 11,
+          "name": "uid",
+          "offset": 4443,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 67,
+          "length": 20,
+          "name": "value_id",
+          "offset": 4447,
+          "type_code": 8
+        }
+      ],
+      "complete_data": false,
+      "continuation_blocks": 0,
+      "deleted_blocks": 0,
+      "fragmented_records": 0,
+      "null_fields": 7,
+      "options": 3,
+      "pack_bits": 2,
+      "record_len": 4455,
+      "rows": 1000,
+      "samples": [
+        {
+          "e_id": "157655",
+          "key": "505",
+          "value": "9782800157597"
+        },
+        {
+          "e_id": "157656",
+          "key": "505",
+          "value": "9782800156897"
+        },
+        {
+          "e_id": "157657",
+          "key": "505",
+          "value": "9782800151496"
+        },
+        {
+          "e_id": "157658",
+          "key": "505",
+          "value": "9782800151465"
+        },
+        {
+          "e_id": "157659",
+          "key": "505",
+          "value": "9782800151489"
+        },
+        {
+          "e_id": "157660",
+          "key": "505",
+          "value": "9782800151519"
+        },
+        {
+          "e_id": "157661",
+          "key": "505",
+          "value": "9782800156880"
+        },
+        {
+          "e_id": "157662",
+          "key": "505",
+          "value": "9782800151502"
+        }
+      ],
+      "sha256": {
+        "decoded_rows": "a731232fd6724ac0545a4bd5abb5aab53f919cec72248e57c27d3f96d84ac89f",
+        "frm": "856c93b5b30128be9ab7a29c931eaa687e999f87c0f2531238b4d046b41a8b89",
+        "myd": "91c39bd76fc83636969240c930048c4c9f952a2b557c047961cc6e915d139abd",
+        "myi": "356963ed80134bbbccb843f332bc575981b3d2d3eff33ab62f076faa5723ac22"
+      },
+      "source_data_bytes": 29960470820,
+      "source_rows": 253023577,
+      "table": "editions_add_descr"
+    },
+    {
+      "bytes": 27000,
+      "columns": [
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "etf_id",
+          "offset": 1,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 16410,
+          "length": 10,
+          "name": "f_id",
+          "offset": 5,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 16410,
+          "length": 10,
+          "name": "e_id",
+          "offset": 9,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 16528,
+          "length": 19,
+          "name": "time_added",
+          "offset": 13,
+          "type_code": 18
+        },
+        {
+          "enum_values": [],
+          "flags": 16528,
+          "length": 19,
+          "name": "time_last_modified",
+          "offset": 18,
+          "type_code": 18
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "uid",
+          "offset": 23,
+          "type_code": 3
+        }
+      ],
+      "complete_data": false,
+      "continuation_blocks": 0,
+      "deleted_blocks": 0,
+      "fragmented_records": 0,
+      "null_fields": 0,
+      "options": 0,
+      "pack_bits": 0,
+      "record_len": 27,
+      "rows": 1000,
+      "samples": [
+        {
+          "e_id": "244394",
+          "f_id": "1213650"
+        },
+        {
+          "e_id": "244394",
+          "f_id": "1213651"
+        },
+        {
+          "e_id": "244393",
+          "f_id": "1213652"
+        },
+        {
+          "e_id": "244393",
+          "f_id": "1213653"
+        },
+        {
+          "e_id": "244392",
+          "f_id": "1213654"
+        },
+        {
+          "e_id": "244392",
+          "f_id": "1213655"
+        },
+        {
+          "e_id": "244396",
+          "f_id": "1213656"
+        },
+        {
+          "e_id": "244396",
+          "f_id": "1213657"
+        }
+      ],
+      "sha256": {
+        "decoded_rows": "55129d10a5d3921d4964cc05018257d227e64f19e7844c16eb0b621f00974acc",
+        "frm": "ab11be434239c5beb0c30b8d77f20bc6763ad93ee1e10ab6aaea5b6d2315c484",
+        "myd": "7293878478cd439055dc63d171538e0756ded3eaea494df4b87d0a70e90175e7",
+        "myi": "94d8d26e1d545a6926a9548c442e5f688d8d7aee47f170f603c4f1c6bb5f1062"
+      },
+      "source_data_bytes": 3111877764,
+      "source_rows": 115254732,
+      "table": "editions_to_files"
+    },
+    {
+      "bytes": 247056,
+      "columns": [
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "f_id",
+          "offset": 1,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 16384,
+          "length": 128,
+          "name": "md5",
+          "offset": 5,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "pages",
+          "offset": 134,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "dpi",
+          "offset": 138,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "visible",
+          "offset": 319,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 16528,
+          "length": 19,
+          "name": "time_added",
+          "offset": 332,
+          "type_code": 18
+        },
+        {
+          "enum_values": [],
+          "flags": 16528,
+          "length": 19,
+          "name": "time_last_modified",
+          "offset": 337,
+          "type_code": 18
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 1020,
+          "name": "cover_url",
+          "offset": 342,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "cover_exists",
+          "offset": 1364,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 4000,
+          "name": "commentary",
+          "offset": 1365,
+          "type_code": 15
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "color",
+          "offset": 5367,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "cleaned",
+          "offset": 5368,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "P",
+            "L",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "orientation",
+          "offset": 5369,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "paginated",
+          "offset": 5370,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "scanned",
+          "offset": 5371,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "vector",
+          "offset": 5372,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "bookmarked",
+          "offset": 5373,
+          "type_code": 247
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "ocr",
+          "offset": 5374,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 66,
+          "length": 20,
+          "name": "filesize",
+          "offset": 5375,
+          "type_code": 8
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "extension",
+          "offset": 5383,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 2000,
+          "name": "locator",
+          "offset": 5564,
+          "type_code": 15
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "broken",
+          "offset": 7566,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 10,
+          "length": 1,
+          "name": "editable",
+          "offset": 7567,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 128,
+          "name": "generic",
+          "offset": 7568,
+          "type_code": 254
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 800,
+          "name": "cover_info",
+          "offset": 7696,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 144,
+          "length": 19,
+          "name": "file_create_date",
+          "offset": 8498,
+          "type_code": 18
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "archive_files_count",
+          "offset": 8503,
+          "type_code": 3
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "archive_dop_files_flag",
+          "offset": 8507,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "archive_files_pic_count",
+          "offset": 8508,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "scan_type",
+          "offset": 8512,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 580,
+          "name": "scan_content",
+          "offset": 8693,
+          "type_code": 15
+        },
+        {
+          "enum_values": [
+            "Y",
+            "N",
+            ""
+          ],
+          "flags": 264,
+          "length": 4,
+          "name": "c2c",
+          "offset": 9275,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "scan_quality",
+          "offset": 9276,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 32768,
+          "length": 500,
+          "name": "releaser",
+          "offset": 9457,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "version",
+          "offset": 9959,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 10,
+          "length": 3,
+          "name": "nfo",
+          "offset": 10140,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 10,
+          "length": 3,
+          "name": "sfv",
+          "offset": 10141,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 10,
+          "length": 3,
+          "name": "diz",
+          "offset": 10142,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 10,
+          "length": 3,
+          "name": "fbd",
+          "offset": 10143,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "libgen_id",
+          "offset": 10144,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "fiction_id",
+          "offset": 10148,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "fiction_rus_id",
+          "offset": 10152,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "comics_id",
+          "offset": 10156,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "scimag_id",
+          "offset": 10160,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "standarts_id",
+          "offset": 10164,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "magz_id",
+          "offset": 10168,
+          "type_code": 3
+        },
+        {
+          "enum_values": [
+            "l",
+            "s",
+            "m",
+            "c",
+            "f",
+            "r",
+            "a"
+          ],
+          "flags": 16648,
+          "length": 4,
+          "name": "libgen_topic",
+          "offset": 10172,
+          "type_code": 247
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 180,
+          "name": "scan_size",
+          "offset": 10173,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 4000,
+          "name": "scimag_archive_path",
+          "offset": 10354,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 32779,
+          "length": 1,
+          "name": "scimag_archive_path_is_doi",
+          "offset": 14356,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "uid",
+          "offset": 14357,
+          "type_code": 3
+        }
+      ],
+      "complete_data": false,
+      "continuation_blocks": 0,
+      "deleted_blocks": 0,
+      "fragmented_records": 0,
+      "null_fields": 2,
+      "options": 3,
+      "pack_bits": 3,
+      "record_len": 14361,
+      "rows": 1000,
+      "samples": [
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "1",
+          "fiction_id": "0",
+          "filesize": "36063270",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "d71da203041c872157f4df06db1687e2",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "2",
+          "fiction_id": "0",
+          "filesize": "46926515",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "99b063e0d8d48483f75d68805172db9f",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "3",
+          "fiction_id": "0",
+          "filesize": "6427568",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "3e2e110e6c8133fd21b59cd64fab2e28",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "4",
+          "fiction_id": "0",
+          "filesize": "8486392",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "2f2a02d08a2d803713b8c2ebfdabd095",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "5",
+          "fiction_id": "0",
+          "filesize": "43078523",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "aa153fb5da1f00d4606800adee96bb25",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "6",
+          "fiction_id": "0",
+          "filesize": "7111486",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "393ea41683e96862408f7c4d9e0c7c9e",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbr",
+          "f_id": "7",
+          "fiction_id": "0",
+          "filesize": "13780242",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "94cc9dbae97a51efbfe9b6a17f42b050",
+          "pages": "0",
+          "visible": ""
+        },
+        {
+          "broken": "N",
+          "extension": "cbz",
+          "f_id": "8",
+          "fiction_id": "0",
+          "filesize": "16748951",
+          "libgen_id": "0",
+          "libgen_topic": "c",
+          "md5": "b178ccbfea24bbc4e189a615a4edd47b",
+          "pages": "0",
+          "visible": ""
+        }
+      ],
+      "sha256": {
+        "decoded_rows": "eb6986e88d8bfcb9437cf4a788c3f4add408a37826444f5633419876b23dec9e",
+        "frm": "ede387d5e28131f835293f88cd5fc2d65da9fc25ec16ba3d14af2a236c4ba237",
+        "myd": "cee3e98d75a67d618590b723d5e32d6ab1208a5a9de250f11b084e1ef0982e25",
+        "myi": "ad47f49b099b2a467e5f11d69b4f76d0f9e8d0baf00876e62f42597aa41af888"
+      },
+      "source_data_bytes": 17526358080,
+      "source_rows": 116458943,
+      "table": "files"
+    },
+    {
+      "bytes": 27680,
+      "columns": [
+        {
+          "enum_values": [],
+          "flags": 26,
+          "length": 10,
+          "name": "key",
+          "offset": 0,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 4000,
+          "name": "commentary",
+          "offset": 4,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_ru",
+          "offset": 4006,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_en",
+          "offset": 4408,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "type",
+          "offset": 4810,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "checks",
+          "offset": 4823,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "link_pattern",
+          "offset": 5225,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add1_ru",
+          "offset": 5627,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add1_en",
+          "offset": 6029,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "type_add1",
+          "offset": 6431,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "checks_add1",
+          "offset": 6444,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "filled_add1",
+          "offset": 6846,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 200,
+          "name": "link_pattern_add1",
+          "offset": 6847,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add2_ru",
+          "offset": 7048,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add2_en",
+          "offset": 7450,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "type_add2",
+          "offset": 7852,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "checks_add2",
+          "offset": 7865,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "filled_add2",
+          "offset": 8267,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 200,
+          "name": "link_pattern_add2",
+          "offset": 8268,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add3_ru",
+          "offset": 8469,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "name_add3_en",
+          "offset": 8871,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 12,
+          "name": "type_add3",
+          "offset": 9273,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 400,
+          "name": "checks_add3",
+          "offset": 9286,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "filled_add3",
+          "offset": 9688,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 0,
+          "length": 200,
+          "name": "link_pattern_add3",
+          "offset": 9689,
+          "type_code": 15
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_works",
+          "offset": 9890,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_publishers",
+          "offset": 9891,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_editions",
+          "offset": 9892,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_authors",
+          "offset": 9893,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_series",
+          "offset": 9894,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_files",
+          "offset": 9895,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "dateable",
+          "offset": 9896,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "issueable",
+          "offset": 9897,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "default_view_for_edit",
+          "offset": 9898,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "multiple_values",
+          "offset": 9899,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_libgen",
+          "offset": 9900,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_fiction",
+          "offset": 9901,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_fiction_rus",
+          "offset": 9902,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_scimag",
+          "offset": 9903,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_magz",
+          "offset": 9904,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_standarts",
+          "offset": 9905,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "for_comics",
+          "offset": 9906,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 27,
+          "length": 11,
+          "name": "sort",
+          "offset": 9907,
+          "type_code": 3
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "visible",
+          "offset": 9911,
+          "type_code": 1
+        },
+        {
+          "enum_values": [],
+          "flags": 11,
+          "length": 1,
+          "name": "editable",
+          "offset": 9912,
+          "type_code": 1
+        }
+      ],
+      "complete_data": true,
+      "continuation_blocks": 57,
+      "deleted_blocks": 4,
+      "fragmented_records": 38,
+      "null_fields": 0,
+      "options": 3,
+      "pack_bits": 3,
+      "record_len": 9913,
+      "rows": 217,
+      "samples": [
+        {
+          "key": "10",
+          "name_en": "Main Title on original language"
+        },
+        {
+          "key": "11",
+          "name_en": "Main Title on english transcription"
+        },
+        {
+          "key": "12",
+          "name_en": "Main Title variant"
+        },
+        {
+          "key": "13",
+          "name_en": "Main Title on english translate"
+        },
+        {
+          "key": "16",
+          "name_en": "Abbreviations of Main Title"
+        },
+        {
+          "key": "17",
+          "name_en": "CODEN"
+        },
+        {
+          "key": "40",
+          "name_en": "Title addition"
+        },
+        {
+          "key": "50",
+          "name_en": "Subtitle"
+        }
+      ],
+      "sha256": {
+        "decoded_rows": "d9b102c477303b7c91395434772ea809cd04f10e4f3d9ebd0b6c8372ed269121",
+        "frm": "ddaa4cae8b6e2904d26d081983983ce0763ea76ff713022ff8627d3a59f7eb43",
+        "myd": "83b92846cf6d7dab637c6563b1a15edf30c664f43cc5287924205766b7ab7fe6",
+        "myi": "982798841e476ddb60da2926bcac4c606a62a4b6e732a2b945fbf74faee45546"
+      },
+      "source_data_bytes": 27680,
+      "source_rows": 217,
+      "table": "elem_descr"
+    }
+  ],
+  "volumes": 62
+}

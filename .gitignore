@@ -1,0 +1,10 @@
+.direnv
+target/
+web/node_modules/
+web/dist/
+web/src/api/
+data/
+library/
+bookjev.toml
+dist/
+*.tgz

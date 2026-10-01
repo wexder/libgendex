@@ -1,0 +1,12 @@
+bookjev runs one writer with persistent index/cache and library storage.
+The first bootstrap runs in the background. Health probes do not wait for indexing to finish.
+
+Watch progress:
+  kubectl logs -n {{ .Release.Namespace }} deployment/{{ include "bookjev.fullname" . }} -f
+
+Access the service locally:
+  kubectl port-forward -n {{ .Release.Namespace }} service/{{ include "bookjev.fullname" . }} 8080:{{ .Values.service.port }}
+  http://localhost:8080
+
+Chart-created PVCs with persistence.*.retain=true survive helm uninstall.
+To reuse them in a new release, configure persistence.*.existingClaim.

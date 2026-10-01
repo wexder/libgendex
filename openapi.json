@@ -1,0 +1,764 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "bookjev",
+    "description": "Library Genesis index search API",
+    "license": {
+      "name": ""
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/books/{md5}": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "operationId": "get_book",
+        "parameters": [
+          {
+            "name": "md5",
+            "in": "path",
+            "description": "File MD5",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{md5}/file": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Streams the file from a mirror to the browser.",
+        "operationId": "download_book",
+        "parameters": [
+          {
+            "name": "md5",
+            "in": "path",
+            "description": "File MD5",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book file",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{md5}/save": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Downloads the file into the server library under `<author>/`.",
+        "operationId": "save_book",
+        "parameters": [
+          {
+            "name": "md5",
+            "in": "path",
+            "description": "File MD5",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownloadJob"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/downloads": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "operationId": "list_downloads",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DownloadJob"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/index/refresh": {
+      "post": {
+        "tags": [
+          "index"
+        ],
+        "operationId": "refresh_index",
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/index/status": {
+      "get": {
+        "tags": [
+          "index"
+        ],
+        "operationId": "index_status",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "operationId": "search",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Free text: title, author, series, publisher or ISBN.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ext",
+            "in": "query",
+            "description": "Restrict to a file extension, e.g. `epub`.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "description": "Restrict to languages (ISO 639-2 codes as stored by LibGen), comma-separated, e.g. `ger,deu`.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum results (default 40, max 100).",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "ai",
+            "in": "query",
+            "description": "Re-rank with the AI scorer (default true); `false` returns instantly with heuristic ranking.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "required": [
+          "md5",
+          "title",
+          "author",
+          "series",
+          "publisher",
+          "year",
+          "language",
+          "extension",
+          "filesize",
+          "pages",
+          "isbn",
+          "source"
+        ],
+        "properties": {
+          "author": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "filesize": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "isbn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "language": {
+            "type": "string"
+          },
+          "md5": {
+            "type": "string"
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "series": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          }
+        }
+      },
+      "BootstrapProgress": {
+        "type": "object",
+        "required": [
+          "phase",
+          "rows_done",
+          "rows_total",
+          "bytes_done",
+          "bytes_total",
+          "elapsed_seconds",
+          "step_elapsed_seconds",
+          "rows_per_second",
+          "bytes_per_second",
+          "ftp_bytes",
+          "cache_hits",
+          "cached_bytes",
+          "cache_evictions"
+        ],
+        "properties": {
+          "bytes_done": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "bytes_per_second": {
+            "type": "number",
+            "format": "double"
+          },
+          "bytes_total": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "cache_evictions": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "cache_hits": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "cached_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "elapsed_seconds": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "ftp_bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "member": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "phase": {
+            "type": "string"
+          },
+          "rows_done": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "rows_per_second": {
+            "type": "number",
+            "format": "double"
+          },
+          "rows_total": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "step_elapsed_seconds": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "table": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "DownloadJob": {
+        "type": "object",
+        "required": [
+          "md5",
+          "title",
+          "author",
+          "state",
+          "bytes",
+          "total",
+          "path",
+          "started_at"
+        ],
+        "properties": {
+          "author": {
+            "type": "string"
+          },
+          "bytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "md5": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "description": "Path relative to the library directory."
+          },
+          "started_at": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "state": {
+            "$ref": "#/components/schemas/JobState"
+          },
+          "title": {
+            "type": "string"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "ErrorBody": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "required": [
+          "ok",
+          "books",
+          "ranking"
+        ],
+        "properties": {
+          "books": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "ranking": {
+            "type": "string"
+          }
+        }
+      },
+      "IndexStatus": {
+        "type": "object",
+        "required": [
+          "running",
+          "phase",
+          "bytes_done",
+          "bytes_total",
+          "total_books",
+          "sources"
+        ],
+        "properties": {
+          "bootstrap": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/components/schemas/BootstrapProgress",
+                "description": "Current native archive/table progress; totals describe this step, not the whole import."
+              }
+            ]
+          },
+          "bytes_done": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "bytes_total": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "last_error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_run_finished": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "phase": {
+            "type": "string",
+            "description": "Human readable description of the current step."
+          },
+          "running": {
+            "type": "boolean"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceState"
+            }
+          },
+          "total_books": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "JobState": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "downloading",
+          "done",
+          "failed"
+        ]
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "required": [
+          "started"
+        ],
+        "properties": {
+          "started": {
+            "type": "boolean",
+            "description": "False when a refresh is already running."
+          }
+        }
+      },
+      "Scores": {
+        "type": "object",
+        "required": [
+          "relevance",
+          "ereader",
+          "genuine",
+          "ranked_by"
+        ],
+        "properties": {
+          "ereader": {
+            "type": "number",
+            "format": "float",
+            "description": "0..1, how suitable the file is for an e-reader."
+          },
+          "genuine": {
+            "type": "number",
+            "format": "float",
+            "description": "0..1, likelihood the file is the book itself rather than a study guide, summary or sample."
+          },
+          "ranked_by": {
+            "type": "string",
+            "description": "`api`, `local` or `heuristic`."
+          },
+          "relevance": {
+            "type": "number",
+            "format": "float",
+            "description": "0..1, how well the book matches the query."
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "required": [
+          "query",
+          "took_ms",
+          "results"
+        ],
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          },
+          "took_ms": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          }
+        }
+      },
+      "SearchResult": {
+        "type": "object",
+        "required": [
+          "book",
+          "scores",
+          "score",
+          "in_library"
+        ],
+        "properties": {
+          "book": {
+            "$ref": "#/components/schemas/Book"
+          },
+          "in_library": {
+            "type": "boolean"
+          },
+          "score": {
+            "type": "number",
+            "format": "float",
+            "description": "Final combined score used for ordering."
+          },
+          "scores": {
+            "$ref": "#/components/schemas/Scores"
+          }
+        }
+      },
+      "SourceState": {
+        "type": "object",
+        "required": [
+          "name",
+          "books"
+        ],
+        "properties": {
+          "books": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0
+          },
+          "dump_date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "indexed_at": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "minimum": 0
+          },
+          "name": {
+            "type": "string"
+          },
+          "next_file_ids": {
+            "type": "object",
+            "description": "Next per-topic file id (`fiction_id` / `libgen_id`) to fetch from the API's new-files stream.",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 0
+            },
+            "propertyNames": {
+              "type": "string"
+            }
+          },
+          "synced_until": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "API changes are applied up to (excluding) this day; set once the source was bootstrapped."
+          }
+        }
+      }
+    }
+  }
+}

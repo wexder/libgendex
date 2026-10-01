@@ -1,0 +1,86 @@
+# Copy to bookjev.toml (or point BOOKJEV_CONFIG at it). Every key can also be set via env vars:
+# BOOKJEV_<SECTION>__<KEY>, e.g. BOOKJEV_RANKING__PROVIDER=openjev. Values shown are the defaults.
+
+[server]
+bind = "0.0.0.0:8080"
+static_dir = "web/dist"
+
+[paths]
+data_dir = "data"        # index, state.json, FTP range cache, temporary staging db
+library_dir = "library"  # server-side downloads land in <library_dir>/<Author>/<Title (year)>.<ext>
+
+[log]
+level = "info"
+json = false
+
+[indexer]
+enabled = true
+run_on_start = true
+refresh_interval = "24h"   # how often to look for updates
+writer_memory_mb = 64
+ftp_cache_mb = 512        # persistent disk cap for FTP ranges; 0 disables disk caching
+extensions = ["epub", "mobi", "azw3", "azw", "fb2", "pdf", "djvu", "txt", "rtf", "doc", "docx", "lit"]
+# language_key = 101       # descriptor keys; auto-detected from dumps, 101/505 for the API
+# isbn_key = 505
+
+# Sources are bootstrapped once from the FTP snapshot, then kept current through the API below.
+# RAR volumes are read by range and only retained in the capped `ftp_cache_mb` cache; full volumes
+# and extracted MyISAM data files are not written to disk.
+[[indexer.sources]]
+name = "libgen"
+topics = ["f", "l"]        # f = fiction, l = non-fiction
+listing_urls = ["ftp://ftp.libgen.bz/upload/dbbackup/"]
+pattern = 'libgen_new-(\d{4}-\d{2}-\d{2})\.part(\d+)\.rar'
+
+# A source can also bootstrap from a dump you already have (.sql, .sql.gz or the first .rar volume):
+# [[indexer.sources]]
+# name = "fiction"
+# topics = ["f"]
+# local_path = "/dumps/libgen_new_fiction-2026-09-27.part01.rar"
+
+# Incremental updates via libgen.li json.php: files modified per day (the API only answers
+# one-day ranges), their editions looked up by id. The first run after a bootstrap catches up from
+# the snapshot date day by day and resumes where it stopped if interrupted.
+[indexer.api]
+enabled = true             # false = stream a newer FTP snapshot when published
+urls = ["https://libgen.li/json.php", "https://libgen.bz/json.php", "https://libgen.vg/json.php"]
+page_size = 2000           # records per listing request (max 10000; big pages take the server >45 s)
+batch_size = 100           # ids per lookup request
+concurrency = 4            # lookup requests in flight at once
+request_delay = "1s"       # pause before each request
+timeout = "45s"           # requests normally finish in <15 s; some hang and are retried
+
+[download]
+user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0"
+connect_timeout = "20s"
+max_concurrent = 2
+# Tried in order. `link_pattern` extracts the file link from the page; without it `url` must serve the file.
+resolvers = [
+  { url = "https://libgen.bz/ads.php?md5={md5}", link_pattern = 'href="([^"]*get\.php\?md5=[^"]+)"' },
+  { url = "https://libgen.li/ads.php?md5={md5}", link_pattern = 'href="([^"]*get\.php\?md5=[^"]+)"' },
+  { url = "https://libgen.vg/ads.php?md5={md5}", link_pattern = 'href="([^"]*get\.php\?md5=[^"]+)"' },
+]
+
+[ranking]
+# Optional AI re-ranking on top of BM25 + format rules:
+#   "none"  – no AI (default, lightest)
+#   "api"   – remote OpenJev / Jev compatible server exposing /v1/systemone
+#   "local" – in-process model on the CPU; the binary/image must be built with the `local`
+#             feature (`cargo build --features local`, `docker build --build-arg FEATURES=local`)
+provider = "none"
+rerank_top = 30      # how many top BM25 hits get re-ranked
+timeout = "10s"      # budget per AI-ranked search; the UI shows instant results meanwhile
+cache_size = 20000   # cached answers
+
+[ranking.api]
+url = "http://localhost:8081"
+# api_key = "sk-..."
+model = "openjev-latest"
+concurrency = 8      # parallel requests
+
+[ranking.local]
+# Downloaded once into <data_dir>/models (~1.1 GB). The score calibration is tuned for this model;
+# Qwen3-0.6B is faster but its answers were too noisy to be useful in testing.
+model_url = "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf"
+# model_path = "/models/Qwen3-1.7B-Q4_K_M.gguf"   # use a local file instead of downloading
+threads = 0          # CPU threads for the model; 0 = physical cores, at most 6

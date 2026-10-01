@@ -1,0 +1,47 @@
+[package]
+name = "bookjev"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+repository = "https://github.com/wexder/libgendex"
+
+[workspace]
+members = ["crates/myisam-reader"]
+default-members = [".", "crates/myisam-reader"]
+resolver = "3"
+
+[dependencies]
+anyhow = "1"
+arc-swap = "1"
+axum = "0.8"
+figment = { version = "0.10", features = ["toml", "env"] }
+flate2 = "1"
+futures-util = "0.3"
+humantime-serde = "1"
+llama-cpp-2 = { version = "0.1.157", default-features = false, features = ["openmp"], optional = true }
+myisam-reader = { path = "crates/myisam-reader" }
+quick_cache = "0.7"
+regex = "1"
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "stream", "json"] }
+rusqlite = { version = "0.40", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+suppaftp = { version = "12", features = ["tokio"] }
+serde_json = "1"
+sha2 = "0.11"
+tantivy = "0.26"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "signal", "fs", "sync", "time", "io-util"] }
+tower-http = { version = "0.7", features = ["fs", "trace", "compression-gzip"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+utoipa = { version = "5", features = ["axum_extras"] }
+utoipa-axum = "0.2"
+unrar-rs = { version = "0.10.8", default-features = false, features = ["crypto-rust"] }
+
+[features]
+# In-process AI ranking model (builds llama.cpp; needs cmake and a C++ toolchain).
+local = ["dep:llama-cpp-2"]
+
+[profile.release]
+lto = "thin"
+codegen-units = 4
+strip = true
