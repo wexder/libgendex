@@ -54,14 +54,14 @@ jobs:
       - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
         with:
           version: v4.3.0
-      - run: helm lint charts/bookjev --strict
+      - run: helm lint charts/libgendex --strict
       - name: Render persistence, ingress, and config variants
         run: |
-          helm template bookjev charts/bookjev > "$RUNNER_TEMP/chart-default.yaml"
-          helm template bookjev charts/bookjev --set ingress.enabled=true --set config.toml='[log]' > "$RUNNER_TEMP/chart-ingress.yaml"
-          helm template bookjev charts/bookjev --set persistence.data.existingClaim=data --set persistence.library.existingClaim=library --set config.existingSecret=bookjev > "$RUNNER_TEMP/chart-existing.yaml"
-          helm template bookjev charts/bookjev --set persistence.data.enabled=false --set persistence.library.enabled=false > "$RUNNER_TEMP/chart-ephemeral.yaml"
-          if helm template bookjev charts/bookjev --set replicaCount=2; then
+          helm template libgendex charts/libgendex > "$RUNNER_TEMP/chart-default.yaml"
+          helm template libgendex charts/libgendex --set ingress.enabled=true --set config.toml='[log]' > "$RUNNER_TEMP/chart-ingress.yaml"
+          helm template libgendex charts/libgendex --set persistence.data.existingClaim=data --set persistence.library.existingClaim=library --set config.existingSecret=libgendex > "$RUNNER_TEMP/chart-existing.yaml"
+          helm template libgendex charts/libgendex --set persistence.data.enabled=false --set persistence.library.enabled=false > "$RUNNER_TEMP/chart-ephemeral.yaml"
+          if helm template libgendex charts/libgendex --set replicaCount=2; then
             echo 'Chart must reject multiple writers' >&2
             exit 1
           fi

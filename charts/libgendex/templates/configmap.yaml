@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "bookjev.fullname" . }}
+  name: {{ include "libgendex.fullname" . }}
   labels:
-    {{- include "bookjev.labels" . | nindent 4 }}
+    {{- include "libgendex.labels" . | nindent 4 }}
 data:
   bookjev.toml: |
     {{- .Values.config.toml | nindent 4 }}

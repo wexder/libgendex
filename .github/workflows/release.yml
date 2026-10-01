@@ -163,9 +163,9 @@ jobs:
           RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           printf '%s' "$GH_TOKEN" | helm registry login ghcr.io --username "$GH_USER" --password-stdin
-          helm push "dist/bookjev-$RELEASE_VERSION.tgz" "$CHART_REGISTRY"
-          helm pull "$CHART_REGISTRY/bookjev" --version "$RELEASE_VERSION" --destination "$RUNNER_TEMP"
-          cmp "dist/bookjev-$RELEASE_VERSION.tgz" "$RUNNER_TEMP/bookjev-$RELEASE_VERSION.tgz"
+          helm push "dist/libgendex-$RELEASE_VERSION.tgz" "$CHART_REGISTRY"
+          helm pull "$CHART_REGISTRY/libgendex" --version "$RELEASE_VERSION" --destination "$RUNNER_TEMP"
+          cmp "dist/libgendex-$RELEASE_VERSION.tgz" "$RUNNER_TEMP/libgendex-$RELEASE_VERSION.tgz"
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -179,10 +179,10 @@ jobs:
           cat > "$RUNNER_TEMP/release.md" <<EOF
           Container: \`$IMAGE:$RELEASE_VERSION\`
           Container digest: \`$IMAGE_DIGEST\`
-          Helm chart: \`$CHART_REGISTRY/bookjev\` (version \`$RELEASE_VERSION\`)
+          Helm chart: \`$CHART_REGISTRY/libgendex\` (version \`$RELEASE_VERSION\`)
 
           Published images support linux/amd64 and linux/arm64.
           EOF
           args=(--verify-tag --title "$RELEASE_TAG" --notes-file "$RUNNER_TEMP/release.md")
           if [ "$PRERELEASE" = true ]; then args+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" "dist/bookjev-$RELEASE_VERSION.tgz" "${args[@]}"
+          gh release create "$RELEASE_TAG" "dist/libgendex-$RELEASE_VERSION.tgz" "${args[@]}"

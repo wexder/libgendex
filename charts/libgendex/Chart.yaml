@@ -1,5 +1,5 @@
 apiVersion: v2
-name: bookjev
+name: libgendex
 description: Native Rust catalogue search with FTP bootstrap and daily API refreshes
 type: application
 version: 0.1.0
@@ -9,6 +9,6 @@ home: https://github.com/wexder/libgendex
 sources:
   - https://github.com/wexder/libgendex
 keywords:
-  - bookjev
+  - libgendex
   - search
   - books

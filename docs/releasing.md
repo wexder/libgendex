@@ -5,16 +5,16 @@ Repository: [wexder/libgendex](https://github.com/wexder/libgendex).
 | Artifact | Registry reference |
 | --- | --- |
 | Container | `ghcr.io/wexder/libgendex:VERSION` |
-| Helm chart | `oci://ghcr.io/wexder/charts/bookjev` with `--version VERSION` |
+| Helm chart | `oci://ghcr.io/wexder/charts/libgendex` with `--version VERSION` |
 
 The workflows derive the owner/repository from GitHub and lowercase registry names. The chart
-name remains `bookjev`. Published chart defaults point at the container from the same release.
+name is `libgendex`. Published chart defaults point at the container from the same release.
 
 ## Prepare a version
 
 1. Update the root package version in `Cargo.toml`.
 2. Run `cargo check` to update the root package version in `Cargo.lock`.
-3. Update `version` and `appVersion` in `charts/bookjev/Chart.yaml` to that same version.
+3. Update `version` and `appVersion` in `charts/libgendex/Chart.yaml` to that same version.
 4. Update the example release versions in README, chart README, and Compose.
 5. Run `make openapi` after a package version bump, since the spec includes the application version.
 6. Run the checks, review, commit, and push the changes before tagging.
@@ -25,7 +25,7 @@ cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --all-targets --locked
 cargo test -p myisam-reader --doc --locked
-helm lint charts/bookjev --strict
+helm lint charts/libgendex --strict
 docker build -t bookjev:release-check .
 ```
 
@@ -57,15 +57,13 @@ receive version tags and a prerelease GitHub release; they do not move `latest`.
 without SemVer build metadata. Release tags must match package/chart versions exactly.
 
 PRs and pushes to `main`/`master` run format, Clippy, offline Rust tests, OpenAPI consistency,
-frontend build, chart checks, and native amd64/arm64 container smoke checks. PRs do not publish packages.
-The smoke check starts the image as UID 1000 with a read-only root filesystem and verifies both
-the health endpoint and UI with indexing disabled.
+frontend build, chart checks, and native amd64/arm64 container builds. PRs do not publish packages.
 
 The workflow uses the repository's `GITHUB_TOKEN` with `packages: write` in image publishing jobs
 and `contents: write` only when creating the release; no separate registry password is required. Initial repository setup
 must permit GitHub Actions. The chart package and container package may initially be private;
 set both packages to public in GitHub Packages for anonymous installs, or use the credentials
-described in the [chart README](../charts/bookjev/README.md#private-ghcr-packages).
+described in the [chart README](../charts/libgendex/README.md#private-ghcr-packages).
 If a package already exists, grant this repository access under its package Actions settings.
 See [GitHub's GHCR documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 Native ARM64 builds use `ubuntu-24.04-arm`, supported for public and private repositories;

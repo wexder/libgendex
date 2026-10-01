@@ -26,7 +26,41 @@
       "required": ["data", "library"],
       "properties": {
         "data": { "$ref": "#/definitions/storage" },
-        "library": { "$ref": "#/definitions/storage" }
+        "library": {
+          "allOf": [{ "$ref": "#/definitions/storage" }],
+          "properties": {
+            "nfs": {
+              "type": "object",
+              "required": ["enabled", "server", "path", "readOnly"],
+              "properties": {
+                "enabled": { "type": "boolean" },
+                "server": { "type": "string" },
+                "path": { "type": "string" },
+                "readOnly": { "type": "boolean" }
+              }
+            }
+          },
+          "if": {
+            "required": ["nfs"],
+            "properties": {
+              "nfs": {
+                "required": ["enabled"],
+                "properties": { "enabled": { "const": true } }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "existingClaim": { "maxLength": 0 },
+              "nfs": {
+                "properties": {
+                  "server": { "minLength": 1 },
+                  "path": { "pattern": "^/" }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "config": {

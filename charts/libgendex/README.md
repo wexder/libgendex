@@ -1,15 +1,15 @@
-# bookjev Helm chart
+# libgendex Helm chart
 
 Requires Kubernetes 1.26+ and Helm with OCI support (3.8+; CI uses 4.3.0).
 
 Install from GitHub Container Registry:
 
 ```sh
-helm upgrade --install bookjev oci://ghcr.io/wexder/charts/bookjev \
-  --version 0.1.0 --namespace bookjev --create-namespace
+helm upgrade --install libgendex oci://ghcr.io/wexder/charts/libgendex \
+  --version 0.1.0 --namespace libgendex --create-namespace
 ```
 
-For a checkout before publication, replace the OCI reference with `./charts/bookjev` and set
+For a checkout before publication, replace the OCI reference with `./charts/libgendex` and set
 `--set image.repository=YOUR_IMAGE --set image.tag=YOUR_TAG`.
 
 ## Storage and updates
@@ -26,10 +26,13 @@ Restarting during bootstrap starts that import again; retained source ranges rem
 | `imagePullSecrets` | `[]` | Existing Kubernetes registry secrets |
 | `persistence.data.size` | `50Gi` | Index, state, bounded FTP cache, and staging |
 | `persistence.library.size` | `100Gi` | Downloaded books |
+| `persistence.library.nfs.enabled` | `false` | Mount an NFS export directly at `/library` |
+| `persistence.library.nfs.server` / `.path` | empty | NFS server and absolute export path |
+| `persistence.library.nfs.readOnly` | `false` | Make the library mount read-only |
 | `persistence.*.storageClass` | empty | Cluster default storage class |
 | `persistence.*.existingClaim` | empty | Use an existing PVC instead of creating one |
 | `persistence.*.retain` | `true` | Preserve chart-created PVCs on uninstall |
-| `persistence.*.enabled` | `true` | If false and no existingClaim, use ephemeral emptyDir |
+| `persistence.*.enabled` | `true` | If false and no existingClaim or library NFS, use ephemeral emptyDir |
 | `config.toml` | empty | Non-secret TOML settings mounted at `/app/bookjev.toml` |
 | `config.existingSecret` | empty | Existing Secret containing the `bookjev.toml` key |
 | `extraEnv` / `extraEnvFrom` | `[]` | Additional variables and references to ConfigMaps/Secrets |
@@ -47,6 +50,29 @@ Back up `/data` and `/library` before upgrades. Chart-created PVCs remain after 
 `retain=true`; reattach them using `existingClaim` when reinstalling under a new release name.
 Setting `retain=false` before uninstall removes the claims; the StorageClass reclaim policy then
 determines what happens to the underlying volumes. PVC expansion requires StorageClass support.
+
+## Library on NFS
+
+To share the ebooks export with Kavita, add this to your values file:
+
+```yaml
+persistence:
+  library:
+    nfs:
+      enabled: true
+      server: 192.168.240.112
+      path: /mnt/main_pool/private/media/ebooks
+      readOnly: false
+```
+
+This mounts the existing export directly at `/library` and skips creation of the library PVC.
+The index, FTP cache, and staging continue to use the data PVC. NFS takes precedence over
+`persistence.library.enabled`; leave `existingClaim` empty when enabling NFS.
+The export must allow writes by the application's UID/GID 1000 for server-side book downloads.
+With `readOnly: true`, server-side library downloads cannot save books.
+The NFS export must already exist and be reachable from the Kubernetes nodes; see
+[Kubernetes NFS volumes](https://kubernetes.io/docs/concepts/storage/volumes/#nfs).
+The chart does not create, delete, or manage the contents of the export.
 
 ## Ingress and configuration
 
@@ -112,8 +138,8 @@ container. They are separate. Public packages can be pulled without these creden
 ## Check the chart
 
 ```sh
-helm lint charts/bookjev --strict
-helm template bookjev charts/bookjev
+helm lint charts/libgendex --strict
+helm template libgendex charts/libgendex
 ```
 
 CI renders default storage, existing claims, ephemeral storage, ingress, and config variants.

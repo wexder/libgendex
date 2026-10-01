@@ -1,13 +1,14 @@
 {{- range $name := list "data" "library" }}
 {{- $storage := index $.Values.persistence $name }}
-{{- if and $storage.enabled (not $storage.existingClaim) }}
+{{- $useNfs := and (eq $name "library") $.Values.persistence.library.nfs.enabled }}
+{{- if and $storage.enabled (not $storage.existingClaim) (not $useNfs) }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "bookjev.fullname" $ }}-{{ $name }}
+  name: {{ include "libgendex.fullname" $ }}-{{ $name }}
   labels:
-    {{- include "bookjev.labels" $ | nindent 4 }}
+    {{- include "libgendex.labels" $ | nindent 4 }}
   {{- if $storage.retain }}
   annotations:
     helm.sh/resource-policy: keep

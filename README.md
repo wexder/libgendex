@@ -38,13 +38,13 @@ and ensure both are writable by UID/GID 1000.
 
 ## Kubernetes (Helm)
 
-The release workflow publishes the OCI chart to **`oci://ghcr.io/wexder/charts/bookjev`**:
+The release workflow publishes the OCI chart to **`oci://ghcr.io/wexder/charts/libgendex`**:
 
 ```sh
-helm upgrade --install bookjev oci://ghcr.io/wexder/charts/bookjev \
-  --version 0.1.0 --namespace bookjev --create-namespace
+helm upgrade --install libgendex oci://ghcr.io/wexder/charts/libgendex \
+  --version 0.1.0 --namespace libgendex --create-namespace
 
-kubectl -n bookjev port-forward service/bookjev-bookjev 8080:80
+kubectl -n libgendex port-forward service/libgendex-libgendex 8080:80
 ```
 
 The chart creates one instance, a 50 GiB data PVC, and a 100 GiB library PVC using the cluster's
@@ -53,8 +53,10 @@ limit excludes staging, the final index, and downloads. Claims are retained afte
 Upgrades use `Recreate` to keep one writer and briefly interrupt serving. Indexing progress is at
 `GET /api/index/status`; health probes check the server and do not wait for the first import.
 
-See the [chart README](charts/bookjev/README.md) for ingress/TLS, configuration, private registry
+See the [chart README](charts/libgendex/README.md) for ingress/TLS, configuration, private registry
 authentication, existing claims, and storage retention.
+The library can also mount an existing NFS export using `persistence.library.nfs`; see the
+[NFS configuration example](charts/libgendex/README.md#library-on-nfs).
 
 ### How the index is built and kept current
 

@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "bookjev.fullname" . }}
+  name: {{ include "libgendex.fullname" . }}
   labels:
-    {{- include "bookjev.labels" . | nindent 4 }}
+    {{- include "libgendex.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -27,7 +27,7 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "bookjev.fullname" $ }}
+                name: {{ include "libgendex.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

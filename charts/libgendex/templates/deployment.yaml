@@ -1,26 +1,33 @@
 {{- if ne (int .Values.replicaCount) 1 }}
-{{- fail "bookjev requires exactly one replica: the index and FTP cache have a single writer" }}
+{{- fail "libgendex requires exactly one replica: the index and FTP cache have a single writer" }}
 {{- end }}
 {{- if and .Values.config.toml .Values.config.existingSecret }}
 {{- fail "choose config.toml or config.existingSecret, not both" }}
 {{- end }}
+{{- if .Values.persistence.library.nfs.enabled }}
+{{- if .Values.persistence.library.existingClaim }}
+{{- fail "choose persistence.library.nfs or persistence.library.existingClaim, not both" }}
+{{- end }}
+{{- $_ := required "persistence.library.nfs.server is required when NFS is enabled" .Values.persistence.library.nfs.server }}
+{{- $_ := required "persistence.library.nfs.path is required when NFS is enabled" .Values.persistence.library.nfs.path }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "bookjev.fullname" . }}
+  name: {{ include "libgendex.fullname" . }}
   labels:
-    {{- include "bookjev.labels" . | nindent 4 }}
+    {{- include "libgendex.labels" . | nindent 4 }}
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      {{- include "bookjev.selectorLabels" . | nindent 6 }}
+      {{- include "libgendex.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "bookjev.selectorLabels" . | nindent 8 }}
+        {{- include "libgendex.selectorLabels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | quote }}
         {{- with .Values.podAnnotations }}
@@ -36,8 +43,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: bookjev
-          image: {{ include "bookjev.image" . | quote }}
+        - name: libgendex
+          image: {{ include "libgendex.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -82,6 +89,9 @@ spec:
               mountPath: /data
             - name: library
               mountPath: /library
+              {{- if .Values.persistence.library.nfs.enabled }}
+              readOnly: {{ .Values.persistence.library.nfs.readOnly }}
+              {{- end }}
             - name: tmp
               mountPath: /tmp
             {{- if or .Values.config.toml .Values.config.existingSecret }}
@@ -94,12 +104,17 @@ spec:
         {{- range $name := list "data" "library" }}
         {{- $storage := index $.Values.persistence $name }}
         - name: {{ $name }}
-          {{- if $storage.existingClaim }}
+          {{- if and (eq $name "library") $.Values.persistence.library.nfs.enabled }}
+          nfs:
+            server: {{ $.Values.persistence.library.nfs.server | quote }}
+            path: {{ $.Values.persistence.library.nfs.path | quote }}
+            readOnly: {{ $.Values.persistence.library.nfs.readOnly }}
+          {{- else if $storage.existingClaim }}
           persistentVolumeClaim:
             claimName: {{ $storage.existingClaim | quote }}
           {{- else if $storage.enabled }}
           persistentVolumeClaim:
-            claimName: {{ include "bookjev.fullname" $ }}-{{ $name }}
+            claimName: {{ include "libgendex.fullname" $ }}-{{ $name }}
           {{- else }}
           emptyDir: {}
           {{- end }}
@@ -113,7 +128,7 @@ spec:
         {{- else if .Values.config.toml }}
         - name: config
           configMap:
-            name: {{ include "bookjev.fullname" . }}
+            name: {{ include "libgendex.fullname" . }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

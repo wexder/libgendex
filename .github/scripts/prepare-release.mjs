@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 // Keep version validation and OCI naming identical in CI and publishing.
 const cargo = readFileSync("Cargo.toml", "utf8");
-const chart = readFileSync("charts/bookjev/Chart.yaml", "utf8");
+const chart = readFileSync("charts/libgendex/Chart.yaml", "utf8");
 const version = cargo.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
 const chartVersion = chart.match(/^version:\s*(\S+)/m)?.[1];
 const appVersion = chart.match(/^appVersion:\s*"([^"]+)"/m)?.[1];
@@ -33,9 +33,9 @@ if (!repo || !/^[a-z0-9_.-]+\/[a-z0-9_.-]+$/.test(repo)) {
 const owner = repo.split("/")[0];
 const image = `ghcr.io/${repo}`;
 const chartRegistry = `oci://ghcr.io/${owner}/charts`;
-const directory = mkdtempSync(join(process.env.RUNNER_TEMP || tmpdir(), "bookjev-release-"));
-const chartDirectory = join(directory, "bookjev");
-cpSync("charts/bookjev", chartDirectory, { recursive: true });
+const directory = mkdtempSync(join(process.env.RUNNER_TEMP || tmpdir(), "libgendex-release-"));
+const chartDirectory = join(directory, "libgendex");
+cpSync("charts/libgendex", chartDirectory, { recursive: true });
 const values = readFileSync(join(chartDirectory, "values.yaml"), "utf8");
 if (!/^  repository: \S+$/m.test(values)) {
   throw new Error("Chart image repository is missing");

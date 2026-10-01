@@ -21,7 +21,7 @@ ingress:
   className: ""
   annotations: {}
   hosts:
-    - host: bookjev.example.com
+    - host: libgendex.example.com
       paths:
         - path: /
           pathType: Prefix
@@ -42,6 +42,11 @@ persistence:
     accessModes: [ReadWriteOnce]
     size: 100Gi
     retain: true
+    nfs:
+      enabled: false # Mount this export directly instead of a library PVC.
+      server: ""
+      path: ""
+      readOnly: false
 
 config:
   toml: "" # Non-secret application settings, mounted as /app/bookjev.toml.
