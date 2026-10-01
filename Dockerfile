@@ -25,7 +25,7 @@ RUN --mount=type=cache,id=libgendex-registry,target=/usr/local/cargo/registry \
     && /out/libgendex openapi > /out/openapi.json
 
 # The frontend is static output, so its build tools can run on the builder's CPU.
-FROM --platform=$BUILDPLATFORM node:22-trixie-slim AS web
+FROM --platform=$BUILDPLATFORM node:26-trixie-slim AS web
 WORKDIR /src/web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci --no-audit --no-fund
