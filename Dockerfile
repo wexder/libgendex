@@ -42,7 +42,7 @@ RUN apt-get update \
     && groupadd --gid 1000 bookjev \
     && useradd --system --uid 1000 --gid 1000 --home /app bookjev \
     && mkdir -p /data /library && chown bookjev /data /library
-ARG VERSION=0.1.0
+ARG VERSION=0.2.0
 ARG REVISION=unknown
 ARG SOURCE=https://github.com/wexder/libgendex
 LABEL org.opencontainers.image.title="bookjev" \

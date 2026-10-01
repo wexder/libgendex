@@ -27,7 +27,7 @@ docker run -d --name bookjev --restart unless-stopped \
   -p 8080:8080 \
   -v bookjev-data:/data \
   -v bookjev-library:/library \
-  ghcr.io/wexder/libgendex:0.1.0
+  ghcr.io/wexder/libgendex:0.2.0
 ```
 
 Open **http://localhost:8080**. The first index import runs in the background; follow it with
@@ -42,7 +42,7 @@ The release workflow publishes the OCI chart to **`oci://ghcr.io/wexder/charts/l
 
 ```sh
 helm upgrade --install libgendex oci://ghcr.io/wexder/charts/libgendex \
-  --version 0.1.0 --namespace libgendex --create-namespace
+  --version 0.2.0 --namespace libgendex --create-namespace
 
 kubectl -n libgendex port-forward service/libgendex-libgendex 8080:80
 ```
@@ -194,7 +194,7 @@ After committing your changes, bump the version and push its release commit and 
 ```
 
 GitHub Actions validates pull requests and publishes the container and OCI chart on version tags.
-Container tags are `0.1.0`, `v0.1.0`, and `latest` for stable releases; chart versions omit `v`.
+Container tags are `0.2.0`, `v0.2.0`, and `latest` for stable releases; chart versions omit `v`.
 See [release preparation and publishing](docs/releasing.md) for versioning, package visibility,
 CI checks, and the tag workflow. This checkout prepares the publishing setup; artifacts become
 available after a successful release workflow.

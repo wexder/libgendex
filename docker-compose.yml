@@ -4,7 +4,7 @@ services:
       context: .
       # args:
       #   FEATURES: local                       # include the in-process AI ranking model
-    image: ghcr.io/wexder/libgendex:${BOOKJEV_VERSION:-0.1.0}
+    image: ghcr.io/wexder/libgendex:${BOOKJEV_VERSION:-0.2.0}
     restart: unless-stopped
     ports:
       - "8080:8080"

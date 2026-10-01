@@ -6,7 +6,7 @@ Install from GitHub Container Registry:
 
 ```sh
 helm upgrade --install libgendex oci://ghcr.io/wexder/charts/libgendex \
-  --version 0.1.0 --namespace libgendex --create-namespace
+  --version 0.2.0 --namespace libgendex --create-namespace
 ```
 
 For a checkout before publication, replace the OCI reference with `./charts/libgendex` and set
